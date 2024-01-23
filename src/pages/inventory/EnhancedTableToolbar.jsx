@@ -16,17 +16,17 @@ import { useDeleteItem } from '../../hooks/useDeleteItem';
 import { useEditItem } from '../../hooks/useEditItem';
 
 const style = {
-    margin: 'auto',
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 600,
+    width: 200,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
     display: 'flex', 
+    'flex-direction': 'column',
     justifyContent: "center", 
     alignItems: "center", 
   };
@@ -150,7 +150,7 @@ export const EnhancedTableToolbar = (props) => {
               <Box sx={style}>                
                 <TextField sx={{ m: 1 }} id="descModal" label="Description" value={description}  variant="outlined" type="string"  onChange={(e) => setDescription(e.target.value)} required/>
                 <TextField sx={{ m: 1 }} id="descAmount" label="Amount" value={itemAmount} variant="outlined" type="number" onChange={(e) => setItemAmount(e.target.value)} required/>
-                <Button sx={{ m: 1}} variant="contained" type="submit" >Update</Button>
+                <Button sx={{ m: 1, dislay: 'grid'}} variant="contained" type="submit" >Update</Button>
               </Box>
           </form>
         </Modal>
@@ -161,9 +161,9 @@ export const EnhancedTableToolbar = (props) => {
         aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-                ARE YOU SURE?! <br />
-            </Typography>
+            <Typography id="modal-modal-title" variant="h6" component="div">
+                ARE YOU SURE?!
+            </Typography> <br />
             <Button id="modal-description" sx={{ m: 1, backgroundColor: "#F40B27",}} variant="contained" onClick={delSubmit} >YES</Button>
             </Box>
         </Modal>
