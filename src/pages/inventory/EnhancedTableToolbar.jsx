@@ -146,11 +146,13 @@ export const EnhancedTableToolbar = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         >
-            <Box sx={style}>
+          <form onSubmit={editSubmit}>
+              <Box sx={style}>                
                 <TextField sx={{ m: 1 }} id="descModal" label="Description" value={description}  variant="outlined" type="string"  onChange={(e) => setDescription(e.target.value)} required/>
                 <TextField sx={{ m: 1 }} id="descAmount" label="Amount" value={itemAmount} variant="outlined" type="number" onChange={(e) => setItemAmount(e.target.value)} required/>
-                <Button sx={{ m: 1}} variant="contained" onClick={editSubmit} >Update</Button>
-            </Box>
+                <Button sx={{ m: 1}} variant="contained" type="submit" >Update</Button>
+              </Box>
+          </form>
         </Modal>
         <Modal
         open={delOpen}

@@ -51,11 +51,13 @@ export const Inventory = () => {
                  Inventory
             </Typography>
 
-           <Box sx={{  margin: "auto", display: 'flex', justifyContent: "center", alignItems: "center" }}>
+        <form onSubmit={onSubmit}>
+           <Box sx={{  margin: "auto", display: 'flex', justifyContent: "center", alignItems: "center" }}>            
                 <TextField sx={{ m: 1 }} id="description" label="Description" variant="outlined" value={description} type="string" onChange={(e) => setDescription(e.target.value)} required/>
                 <TextField sx={{ m: 1 }} id="amount" label="Amount" variant="outlined" value={itemAmount} type="number" onChange={(e) => setItemAmount(e.target.value)} required/>
-                <Button  sx={{ m: 1}} variant="contained" onClick={onSubmit}>Add</Button>
+                <Button sx={{ m: 1}} variant="contained" type="submit">Add</Button>            
             </Box>
+        </form>
             <EnhancedTable rows={items} />
         </div>     
         <div>
