@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from "react";
 import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import { useDeleteItem } from '../../hooks/useDeleteItem';
+import { useEditItem } from '../../hooks/useEditItem';
 
 const style = {
     margin: 'auto',
@@ -22,7 +23,7 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 600,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
     display: 'flex', 
@@ -32,19 +33,51 @@ const style = {
 
 
 export const EnhancedTableToolbar = (props) => {
-    const { numSelected, selectedId, setSelected } = props;
+    const { numSelected, selected, setSelected } = props;
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [delOpen, setDelOpen] = useState(false);
     const { deleteItem } = useDeleteItem();
+    const { editItem } = useEditItem();
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [description, setDescription] = useState("");
+    const [itemAmount, setItemAmount] = useState(0);
+ 
+    const handleOpen = () => {
+      selected.map(row => {
+        setDescription(row.description);
+        setItemAmount(row.itemAmount);
+      })
+      setOpen(true);
+    }
+
+    const handleClose = () => {
+      setDescription("");
+      setItemAmount(0);
+      setOpen(false);
+    }
+
+    const handleDelOpen = () => {
+      setDelOpen(true);
+    }
+
+    const handleDelClose = () => {
+      setDelOpen(false);
+    }
 
     const delSubmit = (e) => {
         e.preventDefault()
-        deleteItem( selectedId );
+        deleteItem( selected );
         setSelected([]);
+        setDelOpen(false);
 
+    };
+
+    const editSubmit = (e) => {
+      e.preventDefault()
+      editItem( selected, description, itemAmount );
+      setSelected([]);
+      setOpen(false);
     };
 
     return (
@@ -81,7 +114,7 @@ export const EnhancedTableToolbar = (props) => {
         {numSelected > 1 ? (
             <>
                 <Tooltip title="Delete">
-                    <IconButton onClick={ delSubmit }>
+                    <IconButton onClick={ handleDelOpen }>
                     <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -89,7 +122,7 @@ export const EnhancedTableToolbar = (props) => {
         ) : numSelected == 1 ? (
             <>
               <Tooltip title="Delete">
-                <IconButton onClick={ delSubmit }>
+                <IconButton onClick={ handleDelOpen }>
                   <DeleteIcon />
                 </IconButton>
               </Tooltip>
@@ -114,9 +147,22 @@ export const EnhancedTableToolbar = (props) => {
         aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <TextField sx={{ m: 1 }} id="descModal" label="Description" variant="outlined" type="string" required/>
-                <TextField sx={{ m: 1 }} id="descAmount" label="Amount" variant="outlined"  type="number" required/>
-                <Button sx={{ m: 1}} variant="contained" >Update</Button>
+                <TextField sx={{ m: 1 }} id="descModal" label="Description" value={description}  variant="outlined" type="string"  onChange={(e) => setDescription(e.target.value)} required/>
+                <TextField sx={{ m: 1 }} id="descAmount" label="Amount" value={itemAmount} variant="outlined" type="number" onChange={(e) => setItemAmount(e.target.value)} required/>
+                <Button sx={{ m: 1}} variant="contained" onClick={editSubmit} >Update</Button>
+            </Box>
+        </Modal>
+        <Modal
+        open={delOpen}
+        onClose={handleDelClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        >
+            <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+                ARE YOU SURE?! <br />
+            </Typography>
+            <Button id="modal-description" sx={{ m: 1, backgroundColor: "#F40B27",}} variant="contained" onClick={delSubmit} >YES</Button>
             </Box>
         </Modal>
       </Toolbar>

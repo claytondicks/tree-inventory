@@ -68,8 +68,7 @@ export const EnhancedTable = (props) => {
   
     const handleSelectAllClick = (event) => {
       if (event.target.checked) {
-        const newSelected = rows.map((n) => n.id);
-        setSelected(newSelected);
+        setSelected(rows);
         return;
       }
       setSelected([]);
@@ -111,7 +110,7 @@ export const EnhancedTable = (props) => {
     return (
       <Box sx={{ display: 'flex', justifyContent: "center", alignItems: "center", maxWidth: 700, margin: "auto" }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
-          <EnhancedTableToolbar numSelected={selected.length} selectedId={selected} setSelected={setSelected} />
+          <EnhancedTableToolbar numSelected={selected.length} selected={selected} setSelected={setSelected} />
           <TableContainer>
             <Table
               aria-labelledby="tableTitle"
